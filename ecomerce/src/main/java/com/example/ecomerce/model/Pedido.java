@@ -3,23 +3,30 @@ package com.example.ecomerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Entity
 @Table(name = "pedido")
-
 public class Pedido {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Pedido_ID") // Mapeia corretamente a chave primária
     private Integer id;
 
-    @OneToMany(mappedBy = "pedido")
-    @JsonIgnoreProperties({"pedido", "usuario"})
-    private List<Usuario> usuarios;
+    @ManyToOne
+    @JoinColumn(name = "Usuario_ID", referencedColumnName = "Usuario_ID") // Mapeia para a tabela usuario
+    @JsonIgnoreProperties("pedidos") // Evita recursão infinita
+    private Usuario usuario;
 
-    @Column( length = 20)
-    private String Status;
+    @Column(name = "Data_Pedido", nullable = false)
+    private Timestamp dataPedido;
 
+    @Column(name = "Status", length = 20)
+    private String status;
+
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -28,20 +35,28 @@ public class Pedido {
         this.id = id;
     }
 
-    public List<Usuario> getUsuarios() {
-        return usuarios;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUsuarios(List<Usuario> usuarios) {
-        this.usuarios = usuarios;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Timestamp getDataPedido() {
+        return dataPedido;
+    }
+
+    public void setDataPedido(Timestamp dataPedido) {
+        this.dataPedido = dataPedido;
     }
 
     public String getStatus() {
-        return Status;
+        return status;
     }
 
     public void setStatus(String status) {
-        Status = status;
+        this.status = status;
     }
-}
 
+}

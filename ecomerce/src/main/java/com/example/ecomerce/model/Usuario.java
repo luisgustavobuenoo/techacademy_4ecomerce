@@ -1,49 +1,38 @@
 package com.example.ecomerce.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "usuario")
-
-
 public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Usuario_ID")
     private Integer id;
 
-    @Column
-    private String Nome;
+    @Column(name = "Nome", length = 100)
+    private String nome;
 
-    @Column
-    private String Email;
+    @Column(name = "Email", length = 100)
+    private String email;
 
-    @Column
-    private String Senha;
+    @Column(name = "Senha", length = 100)
+    private String senha;
 
+    @Column(name = "Data_Criacao", nullable = false)
+    private Timestamp dataCriacao;
 
-    @ManyToOne
-    @JoinColumn(name = "Usuario_ID", referencedColumnName = "id")
-    @JsonIgnoreProperties("usuario")
-    private  Pedido pedido;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("usuario") // Evita recursões infinitas
+    private List<Pedido> pedidos;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id) && Objects.equals(Nome, usuario.Nome) && Objects.equals(Email, usuario.Email) && Objects.equals(Senha, usuario.Senha) && Objects.equals(pedido, usuario.pedido);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, Nome, Email, Senha, pedido);
-    }
-
+    // Getters e Setters
     public Integer getId() {
         return id;
     }
@@ -53,34 +42,55 @@ public class Usuario {
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        this.nome = nome;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getSenha() {
-        return Senha;
+        return senha;
     }
 
     public void setSenha(String senha) {
-        Senha = senha;
+        this.senha = senha;
     }
 
-    public Pedido getPedido() {
-        return pedido;
+    public Timestamp getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setPedido(Pedido pedido) {
-        this.pedido = pedido;
+    public void setDataCriacao(Timestamp dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public List<Pedido> getPedidos() {
+        return pedidos;
+    }
+
+    public void setPedidos(List<Pedido> pedidos) {
+        this.pedidos = pedidos;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id) && Objects.equals(nome, usuario.nome) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(dataCriacao, usuario.dataCriacao) && Objects.equals(pedidos, usuario.pedidos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, email, senha, dataCriacao, pedidos);
     }
 }
