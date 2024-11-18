@@ -26,6 +26,10 @@ public class Pedido {
     @Column(name = "Status", length = 20)
     private String status;
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("pedido")
+    private List<Pagamento> pagamentos;
+
     // Getters e Setters
     public Integer getId() {
         return id;
