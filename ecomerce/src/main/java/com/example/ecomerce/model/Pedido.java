@@ -12,12 +12,12 @@ public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Pedido_ID") // Mapeia corretamente a chave primária
+    @Column(name = "Pedido_ID")
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "Usuario_ID", referencedColumnName = "Usuario_ID") // Mapeia para a tabela usuario
-    @JsonIgnoreProperties("pedidos") // Evita recursão infinita
+    @JoinColumn(name = "Usuario_ID", referencedColumnName = "Usuario_ID")
+    @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
     @Column(name = "Data_Pedido", nullable = false)
@@ -30,7 +30,6 @@ public class Pedido {
     @JsonIgnoreProperties("pedido")
     private List<Pagamento> pagamentos;
 
-    // Getters e Setters
     public Integer getId() {
         return id;
     }
