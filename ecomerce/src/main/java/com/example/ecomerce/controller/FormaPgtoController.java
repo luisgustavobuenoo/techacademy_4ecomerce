@@ -1,7 +1,10 @@
 package com.example.ecomerce.controller;
 
 
+import com.example.ecomerce.dto.FormaPgtoRequestDTO;
+import com.example.ecomerce.dto.UsuarioRequestDTO;
 import com.example.ecomerce.model.FormaPgto;
+import com.example.ecomerce.model.Usuario;
 import com.example.ecomerce.repository.FormaPgtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +25,15 @@ public class FormaPgtoController {
     }
 
     @PostMapping
-    public FormaPgto salvaOPagemento(@RequestBody FormaPgto formaPgtoRequest) {
-        FormaPgto formaPgto = new FormaPgto();
-        formaPgto.setDescricao(formaPgtoRequest.getDescricao());
+    public ResponseEntity<FormaPgto> save(@RequestBody FormaPgtoRequestDTO dto){
+        if (dto.descricao().isEmpty()) {
+            return ResponseEntity.status(428).build();
+        }
 
+        FormaPgto formaPgto = new FormaPgto();
+
+        formaPgto.setDescricao(formaPgto.getDescricao());
         this.repository.save(formaPgto);
-        return formaPgto;
+        return ResponseEntity.ok(formaPgto);
      }
 }

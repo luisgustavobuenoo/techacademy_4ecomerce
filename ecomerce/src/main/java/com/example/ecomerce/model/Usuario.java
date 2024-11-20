@@ -25,7 +25,7 @@ public class Usuario {
     @Column(name = "Senha", length = 100)
     private String senha;
 
-    @Column(name = "Data_Criacao", nullable = false)
+    @Column(name = "Data_Criacao")
     private Timestamp dataCriacao;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)

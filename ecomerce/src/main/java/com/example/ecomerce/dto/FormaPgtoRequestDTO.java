@@ -1,4 +1,4 @@
 package com.example.ecomerce.dto;
 
-public record FormaPgtoRequestDTO(String nome ) {
+public record FormaPgtoRequestDTO(String descricao ) {
 }
