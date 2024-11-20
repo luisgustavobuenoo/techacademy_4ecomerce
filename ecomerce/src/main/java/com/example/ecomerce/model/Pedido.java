@@ -2,40 +2,37 @@ package com.example.ecomerce.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
-import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "pedido")
 public class Pedido {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Pedido_ID")
-    private Integer id;
+    private Integer pedidoId;
 
     @ManyToOne
     @JoinColumn(name = "Usuario_ID", referencedColumnName = "Usuario_ID")
     @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
-    @Column(name = "Data_Pedido", nullable = false)
-    private Timestamp dataPedido;
 
-    @Column(name = "Status", length = 20)
+    @Column(name = "Data_Pedido")
+    private LocalDateTime dataPedido = LocalDateTime.now();
+
+    @Column(name = "Status")
     private String status;
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("pedido")
-    private List<Pagamento> pagamentos;
+    // Getters e Setters
 
-    public Integer getId() {
-        return id;
+
+    public Integer getPedidoId() {
+        return pedidoId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPedidoId(Integer pedidoId) {
+        this.pedidoId = pedidoId;
     }
 
     public Usuario getUsuario() {
@@ -46,11 +43,11 @@ public class Pedido {
         this.usuario = usuario;
     }
 
-    public Timestamp getDataPedido() {
+    public LocalDateTime getDataPedido() {
         return dataPedido;
     }
 
-    public void setDataPedido(Timestamp dataPedido) {
+    public void setDataPedido(LocalDateTime dataPedido) {
         this.dataPedido = dataPedido;
     }
 
@@ -61,5 +58,4 @@ public class Pedido {
     public void setStatus(String status) {
         this.status = status;
     }
-
 }
