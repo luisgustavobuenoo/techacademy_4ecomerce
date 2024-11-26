@@ -27,6 +27,7 @@ public class ItemController {
     @PostMapping
     public ResponseEntity<Item> save(@RequestBody ItemRequestDTO dto) {
         Item item = new Item();
+        item.setNome(dto.getNome());
         item.setDescricao(dto.getDescricao());
         item.setPreco(dto.getPreco());
         item.setEstoque(dto.getEstoque());
@@ -48,7 +49,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Item> update(@PathVariable Integer id, @RequestBody ItemRequestDTO dto) {
-        if (dto.getDescricao().isEmpty()) {
+        if (dto.getNome().isEmpty()) {
             return ResponseEntity.status(428).build();
         }
 
@@ -56,7 +57,7 @@ public class ItemController {
                 .orElseThrow(() ->
                         new IllegalArgumentException("item não foi encontrado"));
 
-        item.setDescricao(dto.getDescricao());
+        item.setNome(dto.getNome());
 
         this.repository.save(item);
         return ResponseEntity.ok(item);

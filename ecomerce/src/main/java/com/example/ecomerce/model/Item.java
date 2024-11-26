@@ -13,6 +13,9 @@ public class Item {
     @Column(name = "Item_ID")
     private Integer itemId;
 
+    @Column(name = "Nome")
+    private String nome;
+
     @Column(name = "Descricao")
     private String descricao;
 
@@ -21,6 +24,14 @@ public class Item {
 
     @Column(name = "Estoque")
     private BigDecimal estoque;
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public Integer getItemId() {
         return itemId;

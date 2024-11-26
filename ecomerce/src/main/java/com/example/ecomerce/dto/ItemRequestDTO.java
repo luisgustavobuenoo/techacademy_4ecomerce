@@ -4,9 +4,19 @@ import java.math.BigDecimal;
 
 public class ItemRequestDTO {
 
+    private String nome;
     private String descricao;
     private BigDecimal preco;
     private BigDecimal estoque;
+
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public String getDescricao() {
         return descricao;
