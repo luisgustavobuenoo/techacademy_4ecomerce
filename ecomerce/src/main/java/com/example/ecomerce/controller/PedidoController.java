@@ -38,21 +38,37 @@ public class PedidoController {
     @PostMapping
     public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoRequestDTO dto) {
         try {
-            // Busca o usuário pelo ID informado no DTO
+
             Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                     .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
 
-            // Cria uma nova instância de Pedido
+
             Pedido novoPedido = new Pedido();
-            novoPedido.setUsuario(usuario);  // Agora você está associando o objeto Usuario
+            novoPedido.setUsuario(usuario);
             novoPedido.setStatus(dto.getStatus());
 
-            // Salva o pedido no banco de dados
+
             Pedido pedidoSalvo = repository.save(novoPedido);
             return ResponseEntity.ok(pedidoSalvo);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody PedidoRequestDTO dto) {
+        if (dto.getStatus().isEmpty()) {
+            return ResponseEntity.status(428).build();
+        }
+
+        Pedido pedido = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("pedido não foi encontrado"));
+
+        pedido.setStatus(dto.getStatus());
+
+        this.repository.save(pedido);
+        return ResponseEntity.ok(pedido);
     }
 
 }

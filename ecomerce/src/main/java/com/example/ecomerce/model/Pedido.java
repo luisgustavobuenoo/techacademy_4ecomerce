@@ -3,6 +3,7 @@ package com.example.ecomerce.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "pedido")
@@ -24,7 +25,10 @@ public class Pedido {
     @Column(name = "Status")
     private String status;
 
-    // Getters e Setters
+    @JsonIgnoreProperties({"formaPgto","pedido"})
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pagamento> pagamentos;
+
 
 
     public Integer getPedidoId() {
@@ -57,5 +61,13 @@ public class Pedido {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<Pagamento> getPagamentos() {
+        return pagamentos;
+    }
+
+    public void setPagamentos(List<Pagamento> pagamentos) {
+        this.pagamentos = pagamentos;
     }
 }

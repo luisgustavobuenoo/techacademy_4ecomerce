@@ -44,4 +44,21 @@ public class ItemController {
         this.repository.delete(item);
         return ResponseEntity.noContent().build();
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Item> update(@PathVariable Integer id, @RequestBody ItemRequestDTO dto) {
+        if (dto.getDescricao().isEmpty()) {
+            return ResponseEntity.status(428).build();
+        }
+
+        Item item = this.repository.findById(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("item não foi encontrado"));
+
+        item.setDescricao(dto.getDescricao());
+
+        this.repository.save(item);
+        return ResponseEntity.ok(item);
+    }
 }
