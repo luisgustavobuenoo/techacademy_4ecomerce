@@ -4,6 +4,7 @@ import com.example.ecomerce.dto.ItemRequestDTO;
 import com.example.ecomerce.model.Item;
 import com.example.ecomerce.model.Usuario;
 import com.example.ecomerce.repository.ItemRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/Item")
@@ -49,17 +51,21 @@ public class ItemController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Item> update(@PathVariable Integer id, @RequestBody ItemRequestDTO dto) {
-        if (dto.getNome().isEmpty()) {
-            return ResponseEntity.status(428).build();
-        }
 
-        Item item = this.repository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("item não foi encontrado"));
+        Optional<Item> itemOpt = repository.findById(id);
 
+        Item item =  itemOpt.get();
         item.setNome(dto.getNome());
+        item.setDescricao(dto.getDescricao());
+        item.setPreco(dto.getPreco());
+        item.setEstoque(dto.getEstoque());
 
+        // Salvar as alterações no repositório
         this.repository.save(item);
+
+        // Retornar o item atualizado
         return ResponseEntity.ok(item);
     }
+
+
 }
