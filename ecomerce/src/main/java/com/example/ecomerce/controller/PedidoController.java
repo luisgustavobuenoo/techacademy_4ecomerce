@@ -1,15 +1,15 @@
 package com.example.ecomerce.controller;
 
+
 import com.example.ecomerce.dto.PedidoRequestDTO;
-import com.example.ecomerce.model.Pedido;
-import com.example.ecomerce.model.Usuario;
-import com.example.ecomerce.repository.UsuarioRepository;
+import com.example.ecomerce.model.*;
+import com.example.ecomerce.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.example.ecomerce.repository.PedidoRepository;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping ("/api/pedidos")
@@ -20,7 +20,19 @@ public class PedidoController {
     private PedidoRepository repository;
 
     @Autowired
+    private ItemRepository itemRepository;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private FormaPgtoRepository formaPgtoRepository;
+
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     @GetMapping
     public ResponseEntity<List<Pedido>> findAll() {
@@ -35,40 +47,58 @@ public class PedidoController {
                         new IllegalArgumentException("pedido não foi encontrado"));
     }
 
+
     @PostMapping
-    public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoRequestDTO dto) {
-        try {
+    public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoRequestDTO pedidoRequestDTO) {
+        Pedido pedido = new Pedido();
 
-            Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-                    .orElseThrow(() -> new IllegalArgumentException("Usuário não encontrado"));
+        // Configura o pedido
+        pedido.setUsuario(usuarioRepository.findById(pedidoRequestDTO.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado")));
+        pedido.setStatus(pedidoRequestDTO.getStatus());
 
+        // Configura os pagamentos
+        List<Pagamento> pagamentos = pedidoRequestDTO.getPagamentos().stream()
+                .map(pagamentoDTO -> {
+                    Pagamento pagamento = new Pagamento();
 
-            Pedido novoPedido = new Pedido();
-            novoPedido.setUsuario(usuario);
-            novoPedido.setStatus(dto.getStatus());
+                    // Busca a FormaPgto pelo ID
+                    FormaPgto formaPgto = formaPgtoRepository.findById(pagamentoDTO.getFormaPgtoId())
+                            .orElseThrow(() -> new RuntimeException("Forma de pagamento não encontrada"));
 
+                    pagamento.setFormaPgto(formaPgto);
+                    pagamento.setPedido(pedido); // Vincula o pedido
+                    return pagamento;
+                })
+                .toList();
 
-            Pedido pedidoSalvo = repository.save(novoPedido);
-            return ResponseEntity.ok(pedidoSalvo);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
+        pedido.setPagamentos(pagamentos);
+
+        // Configura os itens do pedido (se necessário)
+        List<ItemPedido> itensPedido = pedidoRequestDTO.getItens().stream()
+                .map(itemPedidoDTO -> {
+                    ItemPedido itemPedido = new ItemPedido();
+
+                    // Busca o item pelo ID
+                    Item item = itemRepository.findById(itemPedidoDTO.getItemId())
+                            .orElseThrow(() -> new RuntimeException("Item não encontrado"));
+
+                    itemPedido.setItem(item);
+                    itemPedido.setPedido(pedido);
+                    itemPedido.setQuantidade(itemPedidoDTO.getQuantidade());
+                    itemPedido.setPrecoTotal(item.getPreco().multiply(itemPedidoDTO.getQuantidade()));
+
+                    return itemPedido;
+                })
+                .toList();
+
+        pedido.setItens(itensPedido);
+
+        // Salva o pedido
+        Pedido novoPedido = repository.save(pedido);
+
+        return ResponseEntity.ok(novoPedido);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Pedido> update(@PathVariable Integer id, @RequestBody PedidoRequestDTO dto) {
-        if (dto.getStatus().isEmpty()) {
-            return ResponseEntity.status(428).build();
-        }
-
-        Pedido pedido = this.repository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("pedido não foi encontrado"));
-
-        pedido.setStatus(dto.getStatus());
-
-        this.repository.save(pedido);
-        return ResponseEntity.ok(pedido);
-    }
 
 }

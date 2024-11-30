@@ -27,6 +27,9 @@ public class Pagamento {
     @JoinColumn(name = "Forma_PGTO_ID", referencedColumnName = "Forma_PGTO_ID")
     private FormaPgto formaPgto;
 
+    @Column(name = "Valor")
+    private BigDecimal valor;
+
     @Column(name = "Data_Pagamento")
     private LocalDate data_pagamento;
 
@@ -55,6 +58,8 @@ public class Pagamento {
         this.formaPgto = formaPgto;
     }
 
+
+
     public LocalDate getData_pagamento() {
         return data_pagamento;
     }
@@ -62,5 +67,6 @@ public class Pagamento {
     public void setData_pagamento(LocalDate data_pagamento) {
         this.data_pagamento = data_pagamento;
     }
+
 }
 

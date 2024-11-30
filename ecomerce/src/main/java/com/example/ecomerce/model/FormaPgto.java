@@ -11,9 +11,10 @@ public class FormaPgto {
     @Column(name = "Forma_PGTO_ID")
     private Integer id;
 
-    @Column(name = "Descricao")
+    @Column(name = "Descricao", nullable = true) // Permite valores nulos
     private String descricao;
 
+    // Getters e setters
     public Integer getId() {
         return id;
     }

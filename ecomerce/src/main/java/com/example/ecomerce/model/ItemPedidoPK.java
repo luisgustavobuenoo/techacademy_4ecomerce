@@ -1,16 +1,19 @@
 package com.example.ecomerce.model;
 
 import jakarta.persistence.Column;
-
+import jakarta.persistence.Embeddable;
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ItemPedidoPK {
+@Embeddable
+public class ItemPedidoPK implements Serializable {
     @Column(name = "Pedido_ID")
     private Integer pedidoId;
 
     @Column(name = "Item_ID")
-    private Integer formaPgtoId;
+    private Integer itemId;  // Corrigido o nome do campo para "itemId"
 
+    // Getters e Setters
     public Integer getPedidoId() {
         return pedidoId;
     }
@@ -19,12 +22,12 @@ public class ItemPedidoPK {
         this.pedidoId = pedidoId;
     }
 
-    public Integer getFormaPgtoId() {
-        return formaPgtoId;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setFormaPgtoId(Integer formaPgtoId) {
-        this.formaPgtoId = formaPgtoId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     @Override
@@ -32,11 +35,11 @@ public class ItemPedidoPK {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemPedidoPK that = (ItemPedidoPK) o;
-        return Objects.equals(pedidoId, that.pedidoId) && Objects.equals(formaPgtoId, that.formaPgtoId);
+        return Objects.equals(pedidoId, that.pedidoId) && Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(pedidoId, formaPgtoId);
+        return Objects.hash(pedidoId, itemId);
     }
 }

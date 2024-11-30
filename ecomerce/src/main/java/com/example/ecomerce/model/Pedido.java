@@ -18,19 +18,21 @@ public class Pedido {
     @JsonIgnoreProperties("pedidos")
     private Usuario usuario;
 
-
     @Column(name = "Data_Pedido")
     private LocalDateTime dataPedido = LocalDateTime.now();
 
     @Column(name = "Status")
     private String status;
 
-    @JsonIgnoreProperties({"formaPgto","pedido"})
+    @JsonIgnoreProperties({"pedido", "item"})
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemPedido> itens; // Relação com os itens do pedido.
+
+    @JsonIgnoreProperties({"formaPgto", "pedido"})
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos;
 
-
-
+    // Getters e Setters
     public Integer getPedidoId() {
         return pedidoId;
     }
@@ -61,6 +63,14 @@ public class Pedido {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public List<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     public List<Pagamento> getPagamentos() {
