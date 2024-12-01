@@ -1,10 +1,6 @@
 package com.example.ecomerce.controller;
 
-
-import com.example.ecomerce.dto.FormaPgtoRequestDTO;
-import com.example.ecomerce.dto.UsuarioRequestDTO;
 import com.example.ecomerce.model.FormaPgto;
-import com.example.ecomerce.model.Usuario;
 import com.example.ecomerce.repository.FormaPgtoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,27 +9,31 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/formaPgto")
+@RequestMapping("/api/formas-pgto")
 public class FormaPgtoController {
 
     @Autowired
-    private FormaPgtoRepository repository;
+    private FormaPgtoRepository formaPgtoRepository;
 
+    // Endpoint para listar todas as formas de pagamento
     @GetMapping
-    public ResponseEntity<List<FormaPgto>> achaTodoPagamento() {
-        return ResponseEntity.ok(this.repository.findAll());
+    public ResponseEntity<List<FormaPgto>> listarFormasDePagamento() {
+        List<FormaPgto> formasPgto = formaPgtoRepository.findAll();
+        return ResponseEntity.ok(formasPgto);
     }
 
+    // Endpoint para criar uma nova forma de pagamento
     @PostMapping
-    public ResponseEntity<FormaPgto> save(@RequestBody FormaPgtoRequestDTO dto){
-        if (dto.descricao().isEmpty()) {
-            return ResponseEntity.status(428).build();
-        }
+    public ResponseEntity<FormaPgto> criarFormaDePagamento(@RequestBody FormaPgto formaPgto) {
+        FormaPgto novaFormaPgto = formaPgtoRepository.save(formaPgto);
+        return ResponseEntity.ok(novaFormaPgto);
+    }
 
-        FormaPgto formaPgto = new FormaPgto();
-
-        formaPgto.setDescricao(formaPgto.getDescricao());
-        this.repository.save(formaPgto);
+    // Endpoint para buscar uma forma de pagamento por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<FormaPgto> buscarFormaDePagamentoPorId(@PathVariable Integer id) {
+        FormaPgto formaPgto = formaPgtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Forma de pagamento não encontrada"));
         return ResponseEntity.ok(formaPgto);
-     }
+    }
 }

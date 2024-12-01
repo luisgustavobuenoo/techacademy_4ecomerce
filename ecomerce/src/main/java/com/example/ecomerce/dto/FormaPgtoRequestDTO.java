@@ -1,4 +1,13 @@
 package com.example.ecomerce.dto;
 
-public record FormaPgtoRequestDTO(String descricao ) {
+public class FormaPgtoRequestDTO {
+    private String descricao;
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }
