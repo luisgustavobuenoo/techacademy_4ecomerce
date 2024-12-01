@@ -27,9 +27,6 @@ public class Pagamento {
     @JoinColumn(name = "Forma_PGTO_ID", referencedColumnName = "Forma_PGTO_ID")
     private FormaPgto formaPgto;
 
-    @Column(name = "Valor")
-    private BigDecimal valor;
-
     @Column(name = "Data_Pagamento")
     private LocalDate data_pagamento;
 

@@ -1,31 +1,47 @@
 package com.example.ecomerce.model;
 
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
 @Entity
-@Table
 public class ItemPedido {
+
     @EmbeddedId
     private ItemPedidoPK id;
 
     @ManyToOne
-    @MapsId("Pedidoid")
-    @JoinColumn(name = "Pedido_ID", referencedColumnName = "Pedido_ID")
+    @MapsId("pedidoId")
+    @JoinColumn(name = "Pedido_ID")
     private Pedido pedido;
 
     @ManyToOne
-    @MapsId("item_id")
-    @JoinColumn(name = "Item_ID", referencedColumnName = "Item_ID")
+    @MapsId("itemId")
+    @JoinColumn(name = "Item_ID")
     private Item item;
 
-    @Column(name = "Quantidade")
-    private BigDecimal quantidade;
+    private BigDecimal quantidade;  // Alterado para BigDecimal
 
     @Column(name = "Preco_Total")
     private BigDecimal precoTotal;
 
+    // Getter e Setter para precoTotal
+    public BigDecimal getPrecoTotal() {
+        return precoTotal;
+    }
+
+    public void setPrecoTotal(BigDecimal precoTotal) {
+        this.precoTotal = precoTotal;
+    }
+
+    // Método para calcular precoTotal corretamente
+    public void calcularPrecoTotal() {
+        if (item != null && item.getPreco() != null) {
+            // Multiplica o preco unitario do item pela quantidade
+            this.precoTotal = item.getPreco().multiply(quantidade); // Alterado para BigDecimal
+        }
+    }
+
+    // Getters e Setters para outros campos
     public ItemPedidoPK getId() {
         return id;
     }
@@ -56,13 +72,5 @@ public class ItemPedido {
 
     public void setQuantidade(BigDecimal quantidade) {
         this.quantidade = quantidade;
-    }
-
-    public BigDecimal getPrecoTotal() {
-        return precoTotal;
-    }
-
-    public void setPrecoTotal(BigDecimal precoTotal) {
-        this.precoTotal = precoTotal;
     }
 }
