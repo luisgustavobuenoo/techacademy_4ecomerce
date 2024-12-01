@@ -10,7 +10,7 @@ public class ItemPedidoPK implements Serializable {
     private int pedidoId;
     private int itemId;
 
-    // Construtores
+
     public ItemPedidoPK() {}
 
     public ItemPedidoPK(int pedidoId, int itemId) {
@@ -18,7 +18,7 @@ public class ItemPedidoPK implements Serializable {
         this.itemId = itemId;
     }
 
-    // Getters e Setters
+
     public int getPedidoId() {
         return pedidoId;
     }
@@ -35,7 +35,7 @@ public class ItemPedidoPK implements Serializable {
         this.itemId = itemId;
     }
 
-    // hashCode e equals
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

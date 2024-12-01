@@ -19,12 +19,12 @@ public class ItemPedido {
     @JoinColumn(name = "Item_ID")
     private Item item;
 
-    private BigDecimal quantidade;  // Alterado para BigDecimal
+    private BigDecimal quantidade;
 
     @Column(name = "Preco_Total")
     private BigDecimal precoTotal;
 
-    // Getter e Setter para precoTotal
+
     public BigDecimal getPrecoTotal() {
         return precoTotal;
     }
@@ -33,15 +33,15 @@ public class ItemPedido {
         this.precoTotal = precoTotal;
     }
 
-    // Método para calcular precoTotal corretamente
+   // metodo de calculo
     public void calcularPrecoTotal() {
         if (item != null && item.getPreco() != null) {
             // Multiplica o preco unitario do item pela quantidade
-            this.precoTotal = item.getPreco().multiply(quantidade); // Alterado para BigDecimal
+            this.precoTotal = item.getPreco().multiply(quantidade);
         }
     }
 
-    // Getters e Setters para outros campos
+
     public ItemPedidoPK getId() {
         return id;
     }

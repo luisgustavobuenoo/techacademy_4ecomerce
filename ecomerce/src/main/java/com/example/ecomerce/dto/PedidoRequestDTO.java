@@ -3,12 +3,12 @@ package com.example.ecomerce.dto;
 import java.util.List;
 
 public class PedidoRequestDTO {
-    private Integer usuarioId;       // ID do Usuário que fez o pedido
-    private String status;           // Status do pedido
-    private List<PagamentoRequestDTO> pagamentos; // Lista de pagamentos
-    private List<ItemPedidoDTO> itens;     // Lista de itens do pedido
+    private Integer usuarioId;
+    private String status;
+    private List<PagamentoRequestDTO> pagamentos;
+    private List<ItemPedidoDTO> itens;
 
-    // Getter e Setter para usuarioId
+
     public Integer getUsuarioId() {
         return usuarioId;
     }
@@ -17,7 +17,7 @@ public class PedidoRequestDTO {
         this.usuarioId = usuarioId;
     }
 
-    // Getter e Setter para status
+
     public String getStatus() {
         return status;
     }
@@ -26,7 +26,7 @@ public class PedidoRequestDTO {
         this.status = status;
     }
 
-    // Getter e Setter para pagamentos
+
     public List<PagamentoRequestDTO> getPagamentos() {
         return pagamentos;
     }
@@ -35,7 +35,7 @@ public class PedidoRequestDTO {
         this.pagamentos = pagamentos;
     }
 
-    // Getter e Setter para itens
+
     public List<ItemPedidoDTO> getItens() {
         return itens;
     }

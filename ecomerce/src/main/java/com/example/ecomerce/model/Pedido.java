@@ -26,13 +26,13 @@ public class Pedido {
 
     @JsonIgnoreProperties({"pedido", "item"})
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ItemPedido> itens; // Relação com os itens do pedido.
+    private List<ItemPedido> itens;
 
     @JsonIgnoreProperties({"formaPgto", "pedido"})
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pagamento> pagamentos;
 
-    // Getters e Setters
+
     public Integer getPedidoId() {
         return pedidoId;
     }

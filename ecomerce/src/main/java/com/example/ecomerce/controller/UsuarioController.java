@@ -47,7 +47,7 @@ public class UsuarioController {
         usuario.setEmail(dto.getEmail());
         usuario.setSenha(dto.getSenha());
 
-        // Validação e definição da data do pedido
+
         if (dto.getDataCriacao() == null) {
             usuario.setDataCriacao(Timestamp.valueOf(LocalDateTime.now()));
         } else {

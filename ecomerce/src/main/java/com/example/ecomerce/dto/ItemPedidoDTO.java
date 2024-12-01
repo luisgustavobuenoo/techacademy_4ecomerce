@@ -3,11 +3,11 @@ package com.example.ecomerce.dto;
 import java.math.BigDecimal;
 
 public class ItemPedidoDTO {
-    private Integer itemId;  // Este é o ID do item
+    private Integer itemId;
     private BigDecimal quantidade;
     private BigDecimal precoTotal;
 
-    // Getters e Setters
+
     public Integer getItemId() {
         return itemId;
     }

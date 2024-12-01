@@ -29,10 +29,10 @@ public class Usuario {
     private Timestamp dataCriacao;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("usuario") // Evita recursões infinitas
+    @JsonIgnoreProperties("usuario")
     private List<Pedido> pedidos;
 
-    // Getters e Setters
+
     public Integer getId() {
         return id;
     }

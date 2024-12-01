@@ -49,32 +49,32 @@ public class PedidoController {
     public ResponseEntity<Pedido> criarPedido(@RequestBody PedidoRequestDTO pedidoRequestDTO) {
         Pedido pedido = new Pedido();
 
-        // Configura o usuário e o status
+
         pedido.setUsuario(usuarioRepository.findById(pedidoRequestDTO.getUsuarioId())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado")));
         pedido.setStatus(pedidoRequestDTO.getStatus());
 
-        // Salva o pedido inicialmente para gerar o ID
+
         Pedido pedidoSalvo = repository.save(pedido);
 
-        // Configura os itens do pedido
+
         List<ItemPedido> itensPedido = pedidoRequestDTO.getItens().stream().map(itemPedidoDTO -> {
             ItemPedido itemPedido = new ItemPedido();
 
-            // Configura o ID composto
+
             ItemPedidoPK itemPedidoPK = new ItemPedidoPK();
-            itemPedidoPK.setPedidoId(pedidoSalvo.getPedidoId()); // Obtém o ID gerado
+            itemPedidoPK.setPedidoId(pedidoSalvo.getPedidoId());
             itemPedidoPK.setItemId(itemPedidoDTO.getItemId());
 
             itemPedido.setId(itemPedidoPK);
 
-            // Busca o item
+
             Item item = itemRepository.findById(itemPedidoDTO.getItemId())
                     .orElseThrow(() -> new RuntimeException("Item não encontrado"));
             itemPedido.setItem(item);
             itemPedido.setPedido(pedidoSalvo);
 
-            // Configura quantidade e preço total
+
             BigDecimal quantidade = itemPedidoDTO.getQuantidade();
             itemPedido.setQuantidade(quantidade);
             BigDecimal precoTotal = item.getPreco().multiply(quantidade);
@@ -83,20 +83,20 @@ public class PedidoController {
             return itemPedido;
         }).toList();
 
-        // Salva os itens do pedido
+
         itemPedidoRepository.saveAll(itensPedido);
 
-        // Configura os pagamentos
+
         List<Pagamento> pagamentos = pedidoRequestDTO.getPagamentos().stream().map(pagamentoDTO -> {
             Pagamento pagamento = new Pagamento();
 
-            // Configura o ID composto
+
             PagamentoPK pagamentoPK = new PagamentoPK();
             pagamentoPK.setPedidoId(pedidoSalvo.getPedidoId());
             pagamentoPK.setFormaPgtoId(pagamentoDTO.getFormaPgtoId());
             pagamento.setId(pagamentoPK);
 
-            // Busca a FormaPgto
+
             FormaPgto formaPgto = formaPgtoRepository.findById(pagamentoDTO.getFormaPgtoId())
                     .orElseThrow(() -> new RuntimeException("Forma de pagamento não encontrada"));
             pagamento.setFormaPgto(formaPgto);
@@ -105,14 +105,14 @@ public class PedidoController {
             return pagamento;
         }).toList();
 
-        // Salva os pagamentos
+
         pagamentoRepository.saveAll(pagamentos);
 
-        // Atualiza o pedido com os itens e pagamentos
+
         pedidoSalvo.setItens(itensPedido);
         pedidoSalvo.setPagamentos(pagamentos);
 
-        // Retorna o pedido completo
+
         return ResponseEntity.ok(pedidoSalvo);
     }
 
