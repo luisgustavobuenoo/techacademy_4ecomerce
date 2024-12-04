@@ -1,14 +1,34 @@
-package com.example.ecomerce.dto;
+package com.example.ecomerce.model;
 
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 
-public class ItemRequestDTO {
+@MappedSuperclass
+public abstract class ProdutoBase {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")  // Alterado para o nome correto da coluna
+    private Integer id;
+
+    @Column(name = "Nome")
     private String nome;
+
+    @Column(name = "Descricao")
     private String descricao;
+
+    @Column(name = "Preco")
     private BigDecimal preco;
-    private BigDecimal estoque;
 
     // Getters e Setters
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -31,13 +51,5 @@ public class ItemRequestDTO {
 
     public void setPreco(BigDecimal preco) {
         this.preco = preco;
-    }
-
-    public BigDecimal getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(BigDecimal estoque) {
-        this.estoque = estoque;
     }
 }
