@@ -11,7 +11,7 @@ public class Item extends ProdutoBase {
     @Column(name = "Estoque")
     private BigDecimal estoque;
 
-    // Getters e Setters
+
     public BigDecimal getEstoque() {
         return estoque;
     }

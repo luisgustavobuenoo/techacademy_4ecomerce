@@ -8,7 +8,7 @@ public class ItemRequestDTO {
     private BigDecimal preco;
     private BigDecimal estoque;
 
-    // Getters e Setters
+
     public String getNome() {
         return nome;
     }

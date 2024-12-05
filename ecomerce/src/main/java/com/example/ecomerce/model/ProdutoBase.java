@@ -8,7 +8,7 @@ public abstract class ProdutoBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")  // Alterado para o nome correto da coluna
+    @Column(name = "item_id")
     private Integer id;
 
     @Column(name = "Nome")
@@ -20,7 +20,7 @@ public abstract class ProdutoBase {
     @Column(name = "Preco")
     private BigDecimal preco;
 
-    // Getters e Setters
+
     public Integer getId() {
         return id;
     }
